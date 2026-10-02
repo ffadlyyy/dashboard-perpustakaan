@@ -21,6 +21,33 @@ async function fetchBooks() {
 
 const isEmpty = computed(() => status.value === 'success' && books.value.length === 0)
 
+// BARU: state pencarian & urutan
+const search = ref('')
+const sortOrder = ref('asc')   // 'asc' = A-Z, 'desc' = Z-A
+
+// BARU computed #1: filter berdasarkan judul atau penulis
+const filteredBooks = computed(() => {
+  const q = search.value.trim().toLowerCase()
+  return books.value.filter(b =>
+    b.judul.toLowerCase().includes(q) || b.penulis.toLowerCase().includes(q)
+  )
+})
+
+// BARU computed #2: berantai, mengurutkan hasil computed #1
+const sortedBooks = computed(() => {
+  const list = [...filteredBooks.value]
+  return list.sort((a, b) =>
+    sortOrder.value === 'asc'
+      ? a.judul.localeCompare(b.judul)
+      : b.judul.localeCompare(a.judul)
+  )
+})
+
+// BARU: status "kosong" khusus hasil pencarian
+const noSearchResult = computed(
+  () => status.value === 'success' && books.value.length > 0 && sortedBooks.value.length === 0
+)
+
 onMounted(fetchBooks)
 </script>
 
@@ -37,10 +64,20 @@ onMounted(fetchBooks)
 
     <p v-else-if="isEmpty">Belum ada buku.</p>
 
-    <ul v-else>
-      <li v-for="b in books" :key="b.id">
-        {{ b.judul }} - {{ b.penulis }} ({{ b.kategori }}) | stok: {{ b.stok }}
-      </li>
-    </ul>
+    <template v-else>
+      <div class="toolbar">
+        <input v-model="search" placeholder="Cari judul atau penulis..." />
+        <button @click="sortOrder = 'asc'">A-Z</button>
+        <button @click="sortOrder = 'desc'">Z-A</button>
+      </div>
+
+      <p v-if="noSearchResult">Tidak ada buku yang cocok dengan "{{ search }}".</p>
+
+      <ul v-else>
+        <li v-for="b in sortedBooks" :key="b.id">
+          {{ b.judul }} - {{ b.penulis }} ({{ b.kategori }}) | stok: {{ b.stok }}
+        </li>
+      </ul>
+    </template>
   </main>
 </template>
