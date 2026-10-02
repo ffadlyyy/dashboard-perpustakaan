@@ -103,6 +103,35 @@ async function deleteBook(id) {
   }
 }
 
+// BONUS: edit stok lewat PUT
+async function editStock(book) {
+  const input = window.prompt(`Stok baru untuk "${book.judul}":`, book.stok)
+  if (input === null) return
+  const stok = Number(input)
+  if (input.trim() === '' || !Number.isInteger(stok) || stok < 0) {
+    actionError.value = 'Stok harus angka bulat 0 atau lebih.'
+    return
+  }
+  actionError.value = ''
+  try {
+    const res = await fetch(`${API_URL}/books/${book.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        judul: book.judul,
+        penulis: book.penulis,
+        kategori: book.kategori,
+        stok,
+      }),
+    })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    await fetchBooks(false)
+  } catch (err) {
+    console.error(err)
+    actionError.value = 'Gagal mengubah stok. Cek koneksi ke backend.'
+  }
+}
+
 onMounted(fetchBooks)
 </script>
 
@@ -153,6 +182,7 @@ onMounted(fetchBooks)
               {{ stockStatus(b.stok).label }}
             </span>
             <!-- BARU: tombol hapus -->
+            <button @click="editStock(b)">Edit stok</button>
             <button class="delete-btn" @click="deleteBook(b.id)">Hapus</button>
           </li>
         </ul>
