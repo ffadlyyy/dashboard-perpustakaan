@@ -41,18 +41,47 @@ app.add_middleware(
 )
 
 # --- Endpoint ---
-@app.get("/books", response_model=list[Book], summary="Ambil semua buku")
+@app.get(
+    "/books",
+    response_model=list[Book],
+    summary="Ambil semua buku",
+    description="Mengembalikan seluruh daftar buku yang tersimpan di memori server.",
+)
 def get_books():
     return books
 
-@app.post("/books", response_model=Book, status_code=201, summary="Tambah buku baru")
+@app.post(
+    "/books",
+    response_model=Book,
+    status_code=201,
+    summary="Tambah buku baru",
+    description="Menambah buku baru. Id dibuat otomatis oleh server. Stok harus angka bulat >= 0.",
+)
 def add_book(payload: BookCreate):
     new_id = max((b.id for b in books), default=0) + 1
     book = Book(id=new_id, **payload.model_dump())
     books.append(book)
     return book
 
-@app.delete("/books/{book_id}", summary="Hapus buku berdasarkan id")
+@app.put(
+    "/books/{book_id}",
+    response_model=Book,
+    summary="Ubah data buku",
+    description="Mengganti seluruh data buku berdasarkan id (misalnya untuk update stok). Mengembalikan 404 jika id tidak ada.",
+)
+def update_book(book_id: int, payload: BookCreate):
+    for i, b in enumerate(books):
+        if b.id == book_id:
+            updated = Book(id=book_id, **payload.model_dump())
+            books[i] = updated
+            return updated
+    raise HTTPException(status_code=404, detail="Buku tidak ditemukan")
+
+@app.delete(
+    "/books/{book_id}",
+    summary="Hapus buku berdasarkan id",
+    description="Menghapus satu buku berdasarkan id. Mengembalikan 404 jika id tidak ada.",
+)
 def delete_book(book_id: int):
     for i, b in enumerate(books):
         if b.id == book_id:
