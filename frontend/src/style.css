@@ -89,3 +89,15 @@ li {
 @media (max-width: 400px) {
   .tiles { grid-template-columns: 1fr; }
 }
+
+.bars { margin-bottom: 16px; }
+.bars h2 { font-size: 18px; margin: 0 0 8px; }
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.bar-label { flex: 0 0 120px; font-size: 14px; overflow-wrap: anywhere; }
+.bar-track { flex: 1; background: #eee; border-radius: 6px; height: 14px; min-width: 0; }
+.bar-fill { background: #4f7cff; height: 100%; border-radius: 6px; }
+.bar-value { flex: 0 0 32px; text-align: right; font-size: 14px; }
+
+@media (max-width: 767px) {
+  .bar-label { flex-basis: 90px; }
+}

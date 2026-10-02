@@ -132,6 +132,20 @@ async function editStock(book) {
   }
 }
 
+// BONUS: ringkasan stok per kategori, lebar bar dihitung dari computed
+const stokPerKategori = computed(() => {
+  const totals = books.value.reduce((acc, b) => {
+    acc[b.kategori] = (acc[b.kategori] || 0) + b.stok
+    return acc
+  }, {})
+  const max = Math.max(...Object.values(totals), 1)
+  return Object.entries(totals).map(([kategori, total]) => ({
+    kategori,
+    total,
+    persen: (total / max) * 100,
+  }))
+})
+
 onMounted(fetchBooks)
 </script>
 
@@ -152,6 +166,16 @@ onMounted(fetchBooks)
         <div class="tile"><span>Stok Menipis + Habis</span><strong>{{ menipisHabis }}</strong></div>
         <div class="tile"><span>Jumlah Kategori</span><strong>{{ jumlahKategori }}</strong></div>
         <div class="tile"><span>Total Eksemplar</span><strong>{{ totalEksemplar }}</strong></div>
+        <section class="bars">
+          <h2>Ringkasan Stok per Kategori</h2>
+          <div v-for="k in stokPerKategori" :key="k.kategori" class="bar-row">
+            <span class="bar-label">{{ k.kategori }}</span>
+            <div class="bar-track">
+              <div class="bar-fill" :style="{ width: k.persen + '%' }"></div>
+            </div>
+            <span class="bar-value">{{ k.total }}</span>
+          </div>
+        </section>        
       </section>
 
       <!-- BARU: form tambah buku -->
