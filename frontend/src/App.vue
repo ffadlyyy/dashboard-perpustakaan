@@ -3,8 +3,11 @@ import { ref, computed, onMounted } from 'vue'
 
 const API_URL = 'http://127.0.0.1:8000'
 
-const books = ref([])           // data dari backend disimpan sebagai ref
-const status = ref('loading')   // 'loading' | 'error' | 'success'
+// BARU: ambang batas status stok (jelaskan di README)
+const STOK_MENIPIS_MAX = 3   // stok 1..3 = Menipis, 0 = Stok Habis, >3 = Tersedia
+
+const books = ref([])
+const status = ref('loading')
 
 async function fetchBooks() {
   status.value = 'loading'
@@ -21,11 +24,9 @@ async function fetchBooks() {
 
 const isEmpty = computed(() => status.value === 'success' && books.value.length === 0)
 
-// BARU: state pencarian & urutan
 const search = ref('')
-const sortOrder = ref('asc')   // 'asc' = A-Z, 'desc' = Z-A
+const sortOrder = ref('asc')
 
-// BARU computed #1: filter berdasarkan judul atau penulis
 const filteredBooks = computed(() => {
   const q = search.value.trim().toLowerCase()
   return books.value.filter(b =>
@@ -33,7 +34,6 @@ const filteredBooks = computed(() => {
   )
 })
 
-// BARU computed #2: berantai, mengurutkan hasil computed #1
 const sortedBooks = computed(() => {
   const list = [...filteredBooks.value]
   return list.sort((a, b) =>
@@ -43,9 +43,30 @@ const sortedBooks = computed(() => {
   )
 })
 
-// BARU: status "kosong" khusus hasil pencarian
 const noSearchResult = computed(
   () => status.value === 'success' && books.value.length > 0 && sortedBooks.value.length === 0
+)
+
+// BARU: label & class badge, dipakai di template
+function stockStatus(stok) {
+  if (stok === 0) return { label: 'Stok Habis', cls: 'habis' }
+  if (stok <= STOK_MENIPIS_MAX) return { label: 'Menipis', cls: 'menipis' }
+  return { label: 'Tersedia', cls: 'tersedia' }
+}
+
+// BARU: 4 tile ringkasan, dihitung dari books (semua data, bukan hasil pencarian)
+const totalBuku = computed(() => books.value.length)
+
+const menipisHabis = computed(
+  () => books.value.filter(b => b.stok <= STOK_MENIPIS_MAX).length
+)
+
+const jumlahKategori = computed(
+  () => new Set(books.value.map(b => b.kategori)).size
+)
+
+const totalEksemplar = computed(
+  () => books.value.reduce((sum, b) => sum + b.stok, 0)
 )
 
 onMounted(fetchBooks)
@@ -65,6 +86,14 @@ onMounted(fetchBooks)
     <p v-else-if="isEmpty">Belum ada buku.</p>
 
     <template v-else>
+      <!-- BARU: 4 tile ringkasan -->
+      <section class="tiles">
+        <div class="tile"><span>Total Buku</span><strong>{{ totalBuku }}</strong></div>
+        <div class="tile"><span>Stok Menipis + Habis</span><strong>{{ menipisHabis }}</strong></div>
+        <div class="tile"><span>Jumlah Kategori</span><strong>{{ jumlahKategori }}</strong></div>
+        <div class="tile"><span>Total Eksemplar</span><strong>{{ totalEksemplar }}</strong></div>
+      </section>
+
       <div class="toolbar">
         <input v-model="search" placeholder="Cari judul atau penulis..." />
         <button @click="sortOrder = 'asc'">A-Z</button>
@@ -76,6 +105,10 @@ onMounted(fetchBooks)
       <ul v-else>
         <li v-for="b in sortedBooks" :key="b.id">
           {{ b.judul }} - {{ b.penulis }} ({{ b.kategori }}) | stok: {{ b.stok }}
+          <!-- BARU: badge dengan conditional class binding -->
+          <span class="badge" :class="stockStatus(b.stok).cls">
+            {{ stockStatus(b.stok).label }}
+          </span>
         </li>
       </ul>
     </template>
