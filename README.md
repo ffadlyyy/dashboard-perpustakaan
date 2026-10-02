@@ -48,6 +48,7 @@ karena CORS di backend hanya mengizinkan `localhost:5173`.
 |---|---|---|
 | GET | `/books` | Ambil semua buku |
 | POST | `/books` | Tambah buku baru |
+| PUT | /books/{id} | Ubah data buku (dipakai tombol Edit stok) |
 | DELETE | `/books/{id}` | Hapus buku berdasarkan id |
 
 Field buku: `id`, `judul`, `penulis`, `kategori`, `stok` (angka bulat, minimal 0).
