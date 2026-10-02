@@ -1,0 +1,22 @@
+[
+  {"id": 1, "judul": "Multidentitas", "penulis": "Zahid Ibrahim", "kategori": "Self Improvement", "stok": 5},
+  {"id": 2, "judul": "Clean Code", "penulis": "Robert C. Martin", "kategori": "Technology", "stok": 0},
+  {"id": 3, "judul": "Atomic Habits", "penulis": "James Clear", "kategori": "Self Improvement", "stok": 7},
+  {"id": 4, "judul": "Filosofi Teras", "penulis": "Henry Manampiring", "kategori": "Philosophy", "stok": 2},
+  {"id": 5, "judul": "Bumi", "penulis": "Tere Liye", "kategori": "Fiction Fantasy", "stok": 4},
+  {"id": 6, "judul": "Rich Dad Poor Dad", "penulis": "Robert Kiyosaki", "kategori": "Business", "stok": 6},
+  {"id": 7, "judul": "Thinking, Fast and Slow", "penulis": "Daniel Kahneman", "kategori": "Psychology", "stok": 5},
+  {"id": 8, "judul": "To Kill a Mockingbird", "penulis": "Harper Lee", "kategori": "Fiction", "stok": 3},
+  {"id": 9, "judul": "Bumi Manusia", "penulis": "Pramoedya Ananta Toer", "kategori": "Historical Fiction", "stok": 8},
+  {"id": 10, "judul": "The Dip", "penulis": "Seth Godin", "kategori": "Business", "stok": 4},
+  {"id": 11, "judul": "The Unfair Advantage", "penulis": "Ash Ali", "kategori": "Business", "stok": 5},
+  {"id": 12, "judul": "The 5 AM Club", "penulis": "Robin Sharma", "kategori": "Self Improvement", "stok": 6},
+  {"id": 13, "judul": "Man's Search for Meaning", "penulis": "Viktor E. Frankl", "kategori": "Psychology", "stok": 1},
+  {"id": 14, "judul": "The Psychology of Money", "penulis": "Morgan Housel", "kategori": "Business", "stok": 3},
+  {"id": 15, "judul": "Emotional Intelligence", "penulis": "Daniel Goleman", "kategori": "Self Improvement", "stok": 2},
+  {"id": 16, "judul": "Power", "penulis": "Robert Greene", "kategori": "Self Improvement", "stok": 0},
+  {"id": 17, "judul": "Animal Farm", "penulis": "George Orwell", "kategori": "Fiction", "stok": 0},
+  {"id": 18, "judul": "The Art of Stoicism", "penulis": "Adora Kinara", "kategori": "Self Improvement", "stok": 3},
+  {"id": 19, "judul": "Tentang Kamu", "penulis": "Tere Liye", "kategori": "Fiction", "stok": 1},
+  {"id": 20, "judul": "Muhammad The Messenger", "penulis": "Samih Athif", "kategori": "Religion", "stok": 2}
+]
