@@ -1,3 +1,17 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ---------- Tile ringkasan: desktop 4 kolom ---------- */
 .tiles {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -12,19 +26,66 @@
 .tile span { display: block; font-size: 14px; color: #555; }
 .tile strong { font-size: 28px; }
 
-.toolbar { display: flex; gap: 8px; margin-bottom: 12px; }
+/* ---------- Form & toolbar: boleh membungkus ---------- */
+.add-form,
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.add-form input,
+.toolbar input {
+  flex: 1 1 160px;
+  min-width: 0;
+  padding: 6px 8px;
+}
+.add-form input[type="number"] { flex: 0 1 100px; }
+
+.error { color: #9b1c1c; }
+
+/* ---------- Daftar buku ---------- */
+ul { list-style: none; padding: 0; margin: 0; }
+
+li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  overflow-wrap: anywhere;   /* judul panjang tidak mendorong lebar halaman */
+}
 
 .badge {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 12px;
-  margin-left: 6px;
 }
 .badge.tersedia { background: #d4f5dd; color: #146c2e; }
 .badge.menipis  { background: #fff0c2; color: #8a5a00; }
 .badge.habis    { background: #fbd5d5; color: #9b1c1c; }
 
-.add-form { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-.error { color: #9b1c1c; }
-.delete-btn { margin-left: 8px; }
+.delete-btn { margin-left: auto; }
+
+/* ---------- Tablet: 768 - 1023px ---------- */
+@media (max-width: 1023px) {
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Mobile: < 768px ---------- */
+@media (max-width: 767px) {
+  main { padding: 12px; }
+  h1 { font-size: 22px; }
+  .tile strong { font-size: 24px; }
+
+  /* Tile tetap 2 kolom (diizinkan soal); tumpuk penuh di layar sangat kecil */
+  .add-form input,
+  .toolbar input { flex: 1 1 100%; }
+  .add-form input[type="number"] { flex: 1 1 100%; }
+}
+
+@media (max-width: 400px) {
+  .tiles { grid-template-columns: 1fr; }
+}
