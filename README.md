@@ -66,8 +66,3 @@ ke isi `books.json`. Ini disengaja sesuai ketentuan soal (tanpa database).
 | Stok Habis | stok = 0 | Merah |
 | Menipis | stok 1 sampai 3 | Kuning |
 | Tersedia | stok 4 ke atas | Hijau |
-
-**Alasan:** TULIS ALASANMU DI SINI.
-
-Ambang ini disimpan di konstanta `STOK_MENIPIS_MAX` pada `frontend/src/App.vue`,
-sehingga mudah diubah.
